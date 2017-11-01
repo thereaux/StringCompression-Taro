@@ -6,6 +6,8 @@ On my Honor: Dan Taro
 
 import com.sun.deploy.util.StringUtils;
 
+import java.util.ArrayList;
+
 public class StringCompression {
 
 //Task #1
@@ -73,21 +75,28 @@ allow the user to create a dictionary entry from text that contains a mix of pla
 
 public static String dictionaryCompression(String fullText, String phrase){
     ArrayDictionary a = new ArrayDictionary();
-    a.put(0, phrase);
+
+    a.put(a.size(), phrase);
+
     a.toString();
     String compressedPhrase = "";
     int phraseLength = phrase.length();
-    //iterations happen too frequently becuase full text is shortened
-    for (int i = 0; i < fullText.length()-1; i++){
-        if(fullText.contains(phrase)){
-            int index = fullText.indexOf(phrase);
-            compressedPhrase += fullText.substring(index, phraseLength);
-            fullText = fullText.substring(index+phraseLength);
-        }
+
+    while (fullText.indexOf(phrase) >= 0){
+        int index = fullText.indexOf(phrase);
+        String start = fullText.substring(index, phraseLength);
+        int key = a.size();
+        String end = fullText.substring(index+ phraseLength);
+        compressedPhrase += start +""+key +""+ end;
+        fullText = start + key + end;
     }
 
     double compressionRate;
-    compressionRate = (fullText.length() - phraseLength + a.size()+ phraseLength) / (1.0*fullText.length());
+    double valueLength = 0;
+    for (int i = 0; i < a.size(); i++) {
+         valueLength += ((String)((ArrayList)a.values()).get(i)).length();
+    }
+    compressionRate = (fullText.length() - phraseLength + a.size()+ valueLength) / (1.0*fullText.length());
     System.out.println("Compression Rate: "+compressionRate);
     return compressedPhrase;
 }
@@ -96,12 +105,15 @@ public static String dictionaryCompression(String fullText, String phrase){
     public static void main(String[] args) {
 
         //System.out.println("\"pasta is a food in some places\"--> "+disemvoweling("pasta is a food in some places"));
-        System.out.println("aaaabbbbbhhhhttttttrrrrrr should be a4b5h4t6r6 --> " +
-                simpleCompression("aaaabbbbbhhhhhttttttrrrrrr"));
-        System.out.println("ggbb should be g2b2 --> "+ simpleCompression("ggbb"));
+        //System.out.println("aaaabbbbbhhhhttttttrrrrrr should be a4b5h4t6r6 --> " +
+                //simpleCompression("aaaabbbbbhhhhhttttttrrrrrr"));
+        //System.out.println("ggbb should be g2b2 --> "+ simpleCompression("ggbb"));
         System.out.println("full text: I am a goose, I am a horse, I am an animal, I am a fruit ahhh!");
         System.out.println("phrase: \"I am a \" -->");
         System.out.print(dictionaryCompression("I am a goose, I am a horse, I am an animal, I am a fruit ahhh!",""));
+        String fullText;
+        //user input the phrase to compress
+
 
 
     }

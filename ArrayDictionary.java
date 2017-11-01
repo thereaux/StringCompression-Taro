@@ -85,7 +85,7 @@ public class ArrayDictionary<E,T> {
     //returns a Collection¹ of key-value pairs
     public Collection<E> keys(){
 
-        ArrayList<E> fakeKeys = (ArrayList)keys.clone();
+        ArrayList<E> fakeKeys = new ArrayList<>();
         //deep copy
         for (int i = 0; i < keys.size(); i++){
             fakeKeys.add(keys.get(i));
@@ -97,7 +97,7 @@ public class ArrayDictionary<E,T> {
     //returns a Collection of values
     public Collection<T>  values(){
 
-        ArrayList<T> fakeValues = (ArrayList)values.clone();
+        ArrayList<T> fakeValues = new ArrayList<>();
         //deep copy
         for (int i = 0; i < values.size(); i++){
             fakeValues.add(values.get(i));
@@ -108,12 +108,13 @@ public class ArrayDictionary<E,T> {
 
     public String toString() {
         if (this == null) {
-            return "[]";
+            return "{}";
         } else {
-            String output = "";
-            output += this.keys() + " " + this.values();
-            System.out.println(this.keys());
-            return output;
+            String output = "{";
+            for (int i = 0; i < size(); i++) {
+                output += "("+keys.get(i) +", "+values.get(i)+")";
+            }
+            return output + "}";
         }
     }
 
@@ -122,10 +123,10 @@ public class ArrayDictionary<E,T> {
 //Driver
     public static void main(String[] args) {
 
-        ArrayDictionary ad = new ArrayDictionary();
-        // ArrayDictionary ad = new ArrayDictionary("Name", "Dan");
+        //ArrayDictionary ad = new ArrayDictionary();
+        ArrayDictionary ad = new ArrayDictionary("Name", "Dan");
 
-        //ad.put("Age","12");
+        ad.put("Age","12");
 
 //        Collection valuesCollection = ad.values;
 //
